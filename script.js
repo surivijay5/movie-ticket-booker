@@ -4,6 +4,24 @@ const movieName = document.querySelector('.movie-name-selector')
 const totalSeats = document.querySelector('#seat-number')
 const totalPrice = document.querySelector('#total-price')
 
+class Theatre {
+    constructor(numberOfRows, numberOfColumns, missingSeatIds = [], selectedSeats = [], occupiedSeats = []) {
+        this.selectedSeats = selectedSeats;
+        this.occupiedSeats = occupiedSeats;
+        this.missingSeatIds = missingSeatIds
+        this.numberOfColumns = numberOfColumns
+        this.numberOfRows = numberOfRows
+    }
+}
+
+class MovieSeat {
+    constructor(id, isSelected = false, isOccupied = false) {
+        this.id = id
+        this.isSelected = isSelected;
+        this.isOccupied = isOccupied
+    }
+}
+
 function getMovieSeats(numberOfRows, numberOfColumns, missingSeatIds, selectedSeats = [], occupiedSeats = []) {
     let result = {}
     let id = 1
@@ -45,6 +63,15 @@ function render({ numberOfRows, numberOfColumns, missingSeatIds, selectedSeats, 
     calculatePriceAndRender(selectedSeats)
 }
 
+function calculatePriceAndRender(selectedSeats) {
+    localStorage.setItem('BMS-movie-name', movieName.value)
+    if (!selectedSeats) {
+        selectedSeats = JSON.parse(localStorage.getItem('BMS-selectedSeats')) ?? []
+    }
+    totalSeats.innerText = selectedSeats.length
+    totalPrice.innerText = parseInt(movieName.value) * selectedSeats.length
+}
+
 movieSeatContainer.addEventListener('click', (e) => {
     const el = e.target
     const id = el.dataset.id
@@ -59,33 +86,6 @@ movieSeatContainer.addEventListener('click', (e) => {
 })
 
 movieName.addEventListener('change', () => calculatePriceAndRender())
-
-function calculatePriceAndRender(selectedSeats) {
-    localStorage.setItem('BMS-movie-name', movieName.value)
-    if (!selectedSeats) {
-        selectedSeats = JSON.parse(localStorage.getItem('BMS-selectedSeats')) ?? []
-    }
-    totalSeats.innerText = selectedSeats.length
-    totalPrice.innerText = parseInt(movieName.value) * selectedSeats.length
-}
-
-class Theatre {
-    constructor(numberOfRows, numberOfColumns, missingSeatIds = [], selectedSeats = [], occupiedSeats = []) {
-        this.selectedSeats = selectedSeats;
-        this.occupiedSeats = occupiedSeats;
-        this.missingSeatIds = missingSeatIds
-        this.numberOfColumns = numberOfColumns
-        this.numberOfRows = numberOfRows
-    }
-}
-
-class MovieSeat {
-    constructor(id, isSelected = false, isOccupied = false) {
-        this.id = id
-        this.isSelected = isSelected;
-        this.isOccupied = isOccupied
-    }
-}
 
 let selectedSeats = JSON.parse(localStorage.getItem('BMS-selectedSeats')) ?? []
 let occupiedSeats = JSON.parse(localStorage.getItem('BMS-occupiedSeats')) ?? []
