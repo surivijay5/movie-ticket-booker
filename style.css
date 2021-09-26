@@ -40,7 +40,7 @@ body{
     width: 20px;
     border-radius: 10px 10px 0 0;
     background-color: #998471;
-    margin-right: 3px;
+    margin: 3px;
     cursor: pointer;
 }
 
@@ -74,8 +74,16 @@ body{
 .movie-seats{
     width: 300px;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* flex-wrap: wrap; */
     margin: 20px 0;
+}
+
+.row{
+    display: flex;
+
 }
 
 .total-cost-container{
